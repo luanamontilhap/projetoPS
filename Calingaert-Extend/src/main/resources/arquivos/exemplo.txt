@@ -1,0 +1,13 @@
+        START TESTE
+
+        MACRO
+        SCALE &RP
+        MACRO
+        MULTSC      &A, &B, &C
+        LOAD        &A
+        MULT        &B
+
+
+        MACRO
+&LAB    DISCR       &A, &B, &C, &D
+        SUB         TEMP1
