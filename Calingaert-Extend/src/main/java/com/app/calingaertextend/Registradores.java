@@ -10,6 +10,7 @@ public class Registradores {
 	private int RE; // registrador de endereco de memoria
 	private int R0; // registrador de proposito geral 1
 	private int R1; // registrador de proposito geral 2
+	
 	Registradores(){
 		PC = 0;
 		SP = 0;
