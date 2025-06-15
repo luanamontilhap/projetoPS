@@ -1,3 +1,5 @@
+package com.app.calingaertextend;
+
 public class Memoria{
 
 	private int[] memoria;

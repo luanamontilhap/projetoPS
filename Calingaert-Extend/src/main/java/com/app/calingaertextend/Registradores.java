@@ -1,3 +1,5 @@
+package com.app.calingaertextend;
+
 public class Registradores {
 	
 	private int PC; // program counter

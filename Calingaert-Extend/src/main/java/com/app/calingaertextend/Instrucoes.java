@@ -1,3 +1,5 @@
+package com.app.calingaertextend;
+
 class Instrucoes {
     public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria){
 
