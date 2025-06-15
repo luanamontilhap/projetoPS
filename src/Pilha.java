@@ -13,10 +13,10 @@ public class Pilha{
 	public void setPosicaoPilha (int stackPointer, int valor) throws AcessoIndevidoAMemoriaCheckedException{
 		if(stackPointer < 0)
 			throw new AcessoIndevidoAMemoriaCheckedException("Tentativa de acessar posicao invalida da pilha, stack pointer menor que 0.");
-		else if(stackPointer > tamanho)
+		else if(stackPointer >= tamanho)
 			throw new AcessoIndevidoAMemoriaCheckedException("Stack Overflow.");
 		else
-			pilha[posicao] = valor;
+			pilha[stackPointer] = valor;
 	}
 
 	public int getPosicaoPilha(int stackPointer) throws AcessoIndevidoAMemoriaCheckedException{
