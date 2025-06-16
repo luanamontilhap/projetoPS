@@ -1,5 +1,6 @@
 package com.app.calingaertextend;
 
+
 class Instrucoes {
 
     public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria) throws AcessoIndevidoAMemoriaCheckedException {
@@ -8,7 +9,7 @@ class Instrucoes {
 
             case 0x00: {
                 //BR muda o valor do PC para o endereço que foi informado, tipo PC = op1
-                int valorBr = ModosEnderecamento.resolveOperando(opcode, op1, memoria);
+                int valorBr = ModosEnderecamento.resolveOperando(opcode, op1, memoria); // Fazer isso aqui para todos...
                 registrador.setPC(valorBr);
                 break;
             }
