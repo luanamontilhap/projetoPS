@@ -27,6 +27,7 @@ class Instrucoes {
                 //ADD, aqui a gente soma os operandos (ACC = ACC + memoria [op1])
                 //registrador.ACC += memoria.ler (op1)
                 //ACC = ACC + memoria[op1];
+                System.out.println("DEBUG ADD");
                 int valorAdd = memoria.getPosicaoMemoria(op1);
                 registrador.setACC(registrador.getACC() + valorAdd);
                 registrador.setPC(registrador.getPC() + 2); // Somar mais 2 para a proxima instrucao
@@ -35,6 +36,7 @@ class Instrucoes {
 
             case 0x03: {
                 //LOAD, a gente carrega o operando no ACC (ACC = op1)
+                System.out.println("DEBUG LOAD");
                 int valorLoad = memoria.getPosicaoMemoria(op1);
                 registrador.setACC(valorLoad);
                 registrador.setSP(registrador.getPC() + 2);

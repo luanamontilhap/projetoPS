@@ -18,6 +18,15 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        Memoria memoria = new Memoria(12); // CUIDAR POIS EU SO POSSO TER UMA MEMORIA!!!!!!!
+        Registradores registradores = new Registradores();
+        Executor executor = new Executor(memoria, registradores);
+        executor.carregarPrograma();
+        try {
+        executor.executarPasso();
+        } catch (AcessoIndevidoAMemoriaCheckedException e) {
+            e.printStackTrace();
+        }
         launch();
     }
 }
