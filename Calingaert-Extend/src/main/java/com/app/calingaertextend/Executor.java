@@ -1,7 +1,6 @@
 package com.app.calingaertextend;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,6 +14,8 @@ public class Executor {
     public Executor (Memoria memoria, Registradores registradores) {
         this.memoria = memoria;
         this.registradores = registradores;
+        this.executando = true;
+
     }
 
     public void carregarPrograma() {
@@ -39,7 +40,7 @@ public class Executor {
                 }
             }
             System.out.println("Programa carregado na memória.");
-            memoria.imprimirMemoria(); // Debug
+            //memoria.imprimirMemoria(); // Debug
         }
     } catch (IOException | AcessoIndevidoAMemoriaCheckedException e) {
         e.printStackTrace();
@@ -47,6 +48,7 @@ public class Executor {
 }
 
     public void executarPasso () throws AcessoIndevidoAMemoriaCheckedException {
+        while (executando == true) {
         int pc = registradores.getPC();
         int opcode = memoria.getPosicaoMemoria(pc);
         int op1 = memoria.getPosicaoMemoria(pc+1);
@@ -58,15 +60,15 @@ public class Executor {
         if (opcode == 0x13) { // Copy precisa de 2 operandos
             op2 = memoria.getPosicaoMemoria(pc + 2); 
         }
-        System.out.println("DEBUG ----------- ANTES DE CHAMAR O EXECUTAR");
-        System.out.println("OP1: " + op1);
-        System.out.println("OPCODE: "+ opcode);
-        System.out.println("OP2:" + op2);
-        Instrucoes.executar(opcode, op1, op2, registradores, memoria);
-        System.out.println("DEBUG ----------- DEPOIS DO EXECUTAR");
-        System.out.println("OP1: " + op1);
-        System.out.println("OPCODE: "+ opcode);
-        System.out.println("OP2:" + op2);
+
+        Instrucoes.executar(opcode, op1, op2, registradores, memoria, this);
+
+        }
     }
+        
+    public void pararExecucao () {
+        this.executando = false;
+    }
+
 
 }
