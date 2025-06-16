@@ -21,7 +21,7 @@ public class Executor {
     public void carregarPrograma() {
     try (InputStream inputStream = getClass().getResourceAsStream("/arquivos/exemplo.txt")) {
         if (inputStream == null) {
-            System.out.println("Arquivo não encontrado no classpath.");
+            System.out.println("Arquivo não encontrado.");
             return;
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -32,7 +32,7 @@ public class Executor {
                 linha = linha.trim();
                 if (linha.isEmpty()) continue;
 
-                String[] numeros = linha.split("\\s+"); // separa por espaços
+                String[] numeros = linha.split(" "); // separa por espaços
                 for (String numStr : numeros) {
                     int valor = Integer.parseInt(numStr);
                     memoria.setPosicaoMemoria(endereco, valor);
@@ -40,12 +40,11 @@ public class Executor {
                 }
             }
             System.out.println("Programa carregado na memória.");
-            //memoria.imprimirMemoria(); // Debug
         }
     } catch (IOException | AcessoIndevidoAMemoriaCheckedException e) {
         e.printStackTrace();
+        }
     }
-}
 
     public void executarPasso () throws AcessoIndevidoAMemoriaCheckedException {
         while (executando == true) {
@@ -69,6 +68,5 @@ public class Executor {
     public void pararExecucao () {
         this.executando = false;
     }
-
 
 }
