@@ -7,23 +7,29 @@ class Instrucoes {
 
         switch (opcode){
             
-            case 0: {
+            case 0: { // TESTADO
                 //BR muda o valor do PC para o endereço que foi informado, tipo PC = op1
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 registrador.setPC(valor);
                 break;
             }
 
-            case 1: {
+            case 1: { // TESTADO
                 //BRPOS muda o valor do PC caso for maior que zero (ACC > 0)
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 if (registrador.getACC() > 0) {
-                registrador.setPC(valor);
-                } else registrador.setPC(registrador.getPC() + valor);
-                break;
+                    registrador.setPC(valor);
+                    System.out.println("DEBUG --- BRPOS ----");
+                    System.out.println("PC: " + registrador.getPC());
+                    System.out.println("Valor: " + valor);
+                    System.out.println("op1: " + op1);
+                } else {
+                    registrador.setPC(registrador.getPC() + 2); // Só avança pra próxima instrução
+                }       
+            break;
             }
 
-            case 2: {
+            case 2: { // TESTADO
                 //ADD, aqui a gente soma os operandos (ACC = ACC + memoria [op1])
                 //registrador.ACC += memoria.ler (op1)
                 //ACC = ACC + memoria[op1];
@@ -36,36 +42,41 @@ class Instrucoes {
                 break;
                 }
 
-            case 3: {
+            case 3: { // TESTADO
                 //LOAD, a gente carrega o operando no ACC (ACC = op1)
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
                 System.out.println("DEGUB ---- LOAD ----");
                 System.out.println("OP1: " + op1);                
                 System.out.println("Valor: " + valor);
+                System.out.println("PC: " + registrador.getPC());
                 registrador.setACC(valor);
                 registrador.setPC(registrador.getPC() + 2);
                 break;
             }
 
-            case 4: {
+            case 4: { // TESTADO
                 //BRZERO muda o valor do PC caso ACC == 0
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 if (registrador.getACC() == 0) {
                     registrador.setPC(valor);
-                } else registrador.setPC(registrador.getPC() + 2);
+                } else {
+                    registrador.setPC(registrador.getPC() + 2);
+                }
                 break;
             }
 
-            case 5: {
+            case 5: { // TESTADO
                 //BRNEG muda o PC caso ACC < 0
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 if (registrador.getACC() < 0) {
                     registrador.setPC(valor);
-                } else registrador.setPC(registrador.getPC() + 2);
+                } else {
+                    registrador.setPC(registrador.getPC() + 2);
+                }
                 break;
             }
 
-            case 6: {
+            case 6: { // TESTADO
                 //SUB, aqui a gente subtrai os operandos (ACC = ACC - memoria[op1])
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true); 
                 registrador.setACC(registrador.getACC() - valor);
@@ -73,7 +84,7 @@ class Instrucoes {
                 break;
             }
 
-            case 7: {
+            case 7: { // TESTADO
                 //STORE, guarda o ACC em um endereço (OP1 = ACC)
                 int destino;
                 if ((opcode & 0b00100000) != 0) { // Bit 5 → indireto
@@ -85,6 +96,7 @@ class Instrucoes {
                 System.out.println("DEBUG ---- STORE ----");
                 System.out.println("Destino (endereço): " + destino);
                 System.out.println("ACC: " + registrador.getACC());
+                System.out.println("PC: " + registrador.getPC());
 
                 memoria.setPosicaoMemoria(destino, registrador.getACC());
 
@@ -92,10 +104,12 @@ class Instrucoes {
                 break;
             }
 
-            case 8: {
+            case 8: { // TESTADO
                 //WRITE, aqui a gente escreve na saída (output = Op1)
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
                 System.out.println("Saída: " + valor); // IMPRIMIR NA INTERFACE!!!!!
+                System.out.println("PC: " + registrador.getPC()); // APENAS DEBUG
+
                 registrador.setPC(registrador.getPC() + 2);
                 break;
             }
@@ -108,14 +122,14 @@ class Instrucoes {
             break;
             }
 
-            case 11: {
+            case 11: { // TESTADO
                 // Finalizar programa
                 System.out.println("Programa finalizado com sucesso.");
                 executor.pararExecucao(); 
                 break;
             }
 
-            case 12: {
+            case 12: { // ACHO QUE NAO ESTA CERTO
                 //READ só lê o a entrada (op1 = input)
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 registrador.setACC(valor);
