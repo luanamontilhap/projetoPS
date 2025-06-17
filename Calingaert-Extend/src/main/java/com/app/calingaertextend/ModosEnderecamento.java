@@ -8,6 +8,7 @@ public class ModosEnderecamento {
             if (!permiteImediato) {
                 System.out.println("Modo IMEDIATO nao suportado por essa instrucao");
             } 
+            System.out.println("IMEDIATO");
             return operando;
         }
 
@@ -15,6 +16,7 @@ public class ModosEnderecamento {
             if (!permiteIndireto) {
                 System.out.println("Modo INDIRETO nao suportado por essa instrucao");
             }
+            System.out.println("INDIRETO");
             int endereco = memoria.getPosicaoMemoria(operando);
             return memoria.getPosicaoMemoria(endereco);
         }

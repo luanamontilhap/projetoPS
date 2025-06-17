@@ -6,7 +6,7 @@ class Instrucoes {
     public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria, Executor executor, Pilha pilha) throws AcessoIndevidoAMemoriaCheckedException {
 
         switch (opcode){
-            // 1 boolean -> INDIRETO , 2 -> IMEDIATO
+            
             case 0: {
                 //BR muda o valor do PC para o endereço que foi informado, tipo PC = op1
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
@@ -27,7 +27,10 @@ class Instrucoes {
                 //ADD, aqui a gente soma os operandos (ACC = ACC + memoria [op1])
                 //registrador.ACC += memoria.ler (op1)
                 //ACC = ACC + memoria[op1];
-                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true); 
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
+                System.out.println("DEGUB ---- ADD ----");
+                System.out.println("OP1: " + op1);
+                System.out.println("Valor: " + valor);
                 registrador.setACC(registrador.getACC() + valor);
                 registrador.setPC(registrador.getPC() + 2);
                 break;
@@ -36,6 +39,9 @@ class Instrucoes {
             case 3: {
                 //LOAD, a gente carrega o operando no ACC (ACC = op1)
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
+                System.out.println("DEGUB ---- LOAD ----");
+                System.out.println("OP1: " + op1);                
+                System.out.println("Valor: " + valor);
                 registrador.setACC(valor);
                 registrador.setPC(registrador.getPC() + 2);
                 break;
@@ -69,9 +75,20 @@ class Instrucoes {
 
             case 7: {
                 //STORE, guarda o ACC em um endereço (OP1 = ACC)
-                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false);
-                memoria.setPosicaoMemoria(valor,registrador.getACC());
-                registrador.setPC(registrador.getPC() + 2); 
+                int destino;
+                if ((opcode & 0b00100000) != 0) { // Bit 5 → indireto
+                    destino = memoria.getPosicaoMemoria(op1);
+                } else {
+                    destino = op1;
+                }
+
+                System.out.println("DEBUG ---- STORE ----");
+                System.out.println("Destino (endereço): " + destino);
+                System.out.println("ACC: " + registrador.getACC());
+
+                memoria.setPosicaoMemoria(destino, registrador.getACC());
+
+                registrador.setPC(registrador.getPC() + 2);
                 break;
             }
 
