@@ -5,7 +5,9 @@ class Instrucoes {
 
     public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria, Executor executor, Pilha pilha) throws AcessoIndevidoAMemoriaCheckedException {
 
-        switch (opcode){
+        int opcodeBase = opcode & 0b00011111; 
+
+        switch (opcodeBase){
             
             case 0: { // TESTADO
                 //BR muda o valor do PC para o endereço que foi informado, tipo PC = op1
