@@ -6,20 +6,20 @@ class Instrucoes {
     public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria, Executor executor, Pilha pilha) throws AcessoIndevidoAMemoriaCheckedException {
 
         switch (opcode){
-
+            // 1 boolean -> INDIRETO , 2 -> IMEDIATO
             case 0: {
                 //BR muda o valor do PC para o endereço que foi informado, tipo PC = op1
-                int valorBr = ModosEnderecamento.resolveOperando(opcode, op1, memoria); // Fazer isso aqui para todos...
-                registrador.setPC(valorBr);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
+                registrador.setPC(valor);
                 break;
             }
 
             case 1: {
                 //BRPOS muda o valor do PC caso for maior que zero (ACC > 0)
-                int valorBrpos = memoria.getPosicaoMemoria(op1);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 if (registrador.getACC() > 0) {
-                registrador.setPC(valorBrpos);
-                } else registrador.setPC(registrador.getPC() + valorBrpos);
+                registrador.setPC(valor);
+                } else registrador.setPC(registrador.getPC() + valor);
                 break;
             }
 
@@ -27,56 +27,57 @@ class Instrucoes {
                 //ADD, aqui a gente soma os operandos (ACC = ACC + memoria [op1])
                 //registrador.ACC += memoria.ler (op1)
                 //ACC = ACC + memoria[op1];
-                int valorAdd = memoria.getPosicaoMemoria(op1);
-                registrador.setACC(registrador.getACC() + valorAdd);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true); 
+                registrador.setACC(registrador.getACC() + valor);
                 registrador.setPC(registrador.getPC() + 2);
                 break;
                 }
 
             case 3: {
                 //LOAD, a gente carrega o operando no ACC (ACC = op1)
-                int valorLoad = memoria.getPosicaoMemoria(op1);
-                registrador.setACC(valorLoad);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
+                registrador.setACC(valor);
                 registrador.setPC(registrador.getPC() + 2);
                 break;
             }
 
             case 4: {
                 //BRZERO muda o valor do PC caso ACC == 0
-                int valorBrzero = memoria.getPosicaoMemoria(op1);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 if (registrador.getACC() == 0) {
-                    registrador.setPC(valorBrzero);
+                    registrador.setPC(valor);
                 } else registrador.setPC(registrador.getPC() + 2);
                 break;
             }
 
             case 5: {
                 //BRNEG muda o PC caso ACC < 0
-                int valorNeg = memoria.getPosicaoMemoria(op1);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 if (registrador.getACC() < 0) {
-                    registrador.setPC(valorNeg);
+                    registrador.setPC(valor);
                 } else registrador.setPC(registrador.getPC() + 2);
                 break;
             }
 
             case 6: {
                 //SUB, aqui a gente subtrai os operandos (ACC = ACC - memoria[op1])
-                int valorSub = memoria.getPosicaoMemoria(op1);
-                registrador.setACC(registrador.getACC() - valorSub);
-                registrador.setPC(registrador.getPC() + 2); // Somar mais 2 para a proxima instrucao
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true); 
+                registrador.setACC(registrador.getACC() - valor);
+                registrador.setPC(registrador.getPC() + 2); 
                 break;
             }
 
             case 7: {
                 //STORE, guarda o ACC em um endereço (OP1 = ACC)
-                memoria.setPosicaoMemoria(op1,registrador.getACC());
-                registrador.setPC(registrador.getPC() + 2); // Somar mais 2 para a proxima instrucao
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false);
+                memoria.setPosicaoMemoria(valor,registrador.getACC());
+                registrador.setPC(registrador.getPC() + 2); 
                 break;
             }
 
             case 8: {
                 //WRITE, aqui a gente escreve na saída (output = Op1)
-                int valor = memoria.getPosicaoMemoria(op1);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
                 System.out.println("Saída: " + valor); // Provavelmente aqui vai ter que ter uma area na interface para essas saidas!
                 registrador.setPC(registrador.getPC() + 2);
                 break;
@@ -84,8 +85,8 @@ class Instrucoes {
 
             case 10: {
                 //DIVIDE, só divide msm (ACC = ACC/Op1)
-                int valordiv = memoria.getPosicaoMemoria(op1);
-                registrador.setACC(registrador.getACC( )/ valordiv);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true); 
+                registrador.setACC(registrador.getACC( ) / valor);
                 registrador.setPC (registrador.getPC() +2); //encaixa o ponteiro
             break;
             }
@@ -99,34 +100,42 @@ class Instrucoes {
 
             case 12: {
                 //READ só lê o a entrada (op1 = input)
-                int valorentrada = memoria.getPosicaoMemoria(op1);
-                registrador.setACC(valorentrada);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
+                registrador.setACC(valor);
                 registrador.setPC(registrador.getPC() +2);
             break;
             }
 
             case 13: {
                 //COPY copia de uma op pra outra (op1 = op2)
-                memoria.setPosicaoMemoria(op1, memoria.getPosicaoMemoria(op2));
-                registrador.setPC (registrador.getPC() +2);
+                int destino;
+                if ((opcode & 0b00100000) != 0) {
+                    destino = memoria.getPosicaoMemoria(op1);
+                } else {
+                    destino = op1;
+                }
+                int valor2 = ModosEnderecamento.resolveOperando(opcode, op2, memoria,true,true); 
+                memoria.setPosicaoMemoria(destino, valor2);
+                registrador.setPC (registrador.getPC() + 3);
             break;
             }
             
             case 14: {
                 //MULT multiplica os dois valores (ACC = ACC*Op1)
-                int valormult = memoria.getPosicaoMemoria(op1);
-                registrador.setACC (registrador.getACC()*valormult);
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true); 
+                registrador.setACC (registrador.getACC()*valor);
                 registrador.setPC(registrador.getPC() + 2);
             break;
             }
 
             case 15: {
                 // Salvo PC no topo da pilha
+                int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,false); 
                 pilha.setPosicaoPilha(registrador.getSP(), registrador.getPC());
                 //Incremento SP para apontar para o novo topo da pilha
                 registrador.setSP(registrador.getSP() + 1);
                 //Faço PC receber o desvio
-                registrador.setPC(op1);
+                registrador.setPC(valor);
             break;
             }
 
