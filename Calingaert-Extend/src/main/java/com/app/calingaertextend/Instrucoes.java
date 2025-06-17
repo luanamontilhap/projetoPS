@@ -95,7 +95,7 @@ class Instrucoes {
             case 8: {
                 //WRITE, aqui a gente escreve na saída (output = Op1)
                 int valor = ModosEnderecamento.resolveOperando(opcode, op1, memoria,true,true);
-                System.out.println("Saída: " + valor); // Provavelmente aqui vai ter que ter uma area na interface para essas saidas!
+                System.out.println("Saída: " + valor); // IMPRIMIR NA INTERFACE!!!!!
                 registrador.setPC(registrador.getPC() + 2);
                 break;
             }
