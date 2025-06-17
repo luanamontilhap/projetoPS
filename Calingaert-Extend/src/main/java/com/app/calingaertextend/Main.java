@@ -20,7 +20,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         Memoria memoria = new Memoria(12); // CUIDAR POIS EU SO POSSO TER UMA MEMORIA!!!!!!!
         Registradores registradores = new Registradores(); // CUIDAR POIS EU SO POSSO TER UM REGISTRADOR!!!!!!!
-        Executor executor = new Executor(memoria, registradores);
+        Pilha pilha = new Pilha(12); // CUIDAR POIS EU SO POSSO TER UMA PILHA!!!!!!! ESSE TAMANHO TA CERTO?????
+        Executor executor = new Executor(memoria, registradores,pilha);
         executor.carregarPrograma(); // Carrega na memoria
 
         try {

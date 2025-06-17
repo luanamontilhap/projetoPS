@@ -3,7 +3,7 @@ package com.app.calingaertextend;
 
 class Instrucoes {
 
-    public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria, Executor executor) throws AcessoIndevidoAMemoriaCheckedException {
+    public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria, Executor executor, Pilha pilha) throws AcessoIndevidoAMemoriaCheckedException {
 
         switch (opcode){
 
@@ -84,43 +84,58 @@ class Instrucoes {
 
             case 10: {
                 //DIVIDE, só divide msm (ACC = ACC/Op1)
-                
+                int valordiv = memoria.getPosicaoMemoria(op1);
+                registrador.setACC(registrador.getACC( )/ valordiv);
+                registrador.setPC (registrador.getPC() +2); //encaixa o ponteiro
             break;
             }
 
             case 11: {
+                // Finalizar programa
                 System.out.println("Programa finalizado com sucesso.");
-                System.exit(0);
                 executor.pararExecucao(); 
                 break;
             }
 
             case 12: {
                 //READ só lê o a entrada (op1 = input)
+                int valorentrada = memoria.getPosicaoMemoria(op1);
+                registrador.setACC(valorentrada);
+                registrador.setPC(registrador.getPC() +2);
             break;
             }
 
             case 13: {
                 //COPY copia de uma op pra outra (op1 = op2)
+                memoria.setPosicaoMemoria(op1, memoria.getPosicaoMemoria(op2));
+                registrador.setPC (registrador.getPC() +2);
             break;
             }
+            
             case 14: {
                 //MULT multiplica os dois valores (ACC = ACC*Op1)
+                int valormult = memoria.getPosicaoMemoria(op1);
+                registrador.setACC (registrador.getACC()*valormult);
+                registrador.setPC(registrador.getPC() + 2);
             break;
             }
 
             case 15: {
-                //CALL chama uma subrotina 
-                //(SP = PC
-                    //SP = SP + 1
-                    //PC = ACC (NN SEI)
+                // Salvo PC no topo da pilha
+                pilha.setPosicaoPilha(registrador.getSP(), registrador.getPC());
+                //Incremento SP para apontar para o novo topo da pilha
+                registrador.setSP(registrador.getSP() + 1);
+                //Faço PC receber o desvio
+                registrador.setPC(op1);
             break;
             }
 
             case 16: {
                 //RET (sai d subrotina e volta pro código)
                 // S = SP -1 
-                // PC = SP
+                registrador.setSP(registrador.getSP() - 1);
+                // PC = pilha[SP]
+                registrador.setPC(pilha.getPosicaoPilha(registrador.getSP()));
             break;
             }
 
@@ -128,13 +143,33 @@ class Instrucoes {
                 //PUSH coloca um valor na pilha e ajeita o ponteiro
                 // SP = registrador
                 // SP = SP + 1
+                int aux = registrador.getSP()  + 1;  //SP +=1
+                pilha.setPosicaoPilha(aux, op1);
+
+                registrador.setSP(registrador.getSP() + 1); // Atualiza SP verdadeiro
+                registrador.setPC(registrador.getPC() + 2);
+                //DUVIDA!!!!!
+                //PUSH recebe 1 registrador? O valor fica no op1?
             break;
             }
 
             case 18: {
-                //POP tira um valor na pilha e coloca no registrador
-                // SP = SP -1 
-                // registrador = SP
+                int valorPop = pilha.getPosicaoPilha(registrador.getSP()); //Pego o valor da pilha
+                
+                switch (op1) {
+                    case 0: registrador.setR0(valorPop);
+                        break;
+                    case 1: registrador.setR1(valorPop);
+                        break;
+                    case 2: registrador.setACC(valorPop);
+                        break;
+                    default: 
+                        System.err.println("Registrador inválido na instrução POP: " + op1);
+                }
+    
+                registrador.setSP(registrador.getSP() - 1); // Atualiza SP verdadeiro
+                registrador.setPC(registrador.getPC() + 2); // Atualiza PC
+
             break;
             }
         }

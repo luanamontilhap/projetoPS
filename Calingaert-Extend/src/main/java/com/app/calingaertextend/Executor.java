@@ -10,10 +10,12 @@ public class Executor {
     private boolean executando;
     private Memoria memoria;
     private Registradores registradores;
+    private Pilha pilha;
 
-    public Executor (Memoria memoria, Registradores registradores) {
+    public Executor (Memoria memoria, Registradores registradores, Pilha pilha) {
         this.memoria = memoria;
         this.registradores = registradores;
+        this.pilha = pilha;
         this.executando = true;
 
     }
@@ -60,7 +62,7 @@ public class Executor {
             op2 = memoria.getPosicaoMemoria(pc + 2); 
         }
 
-        Instrucoes.executar(opcode, op1, op2, registradores, memoria, this);
+        Instrucoes.executar(opcode, op1, op2, registradores, memoria, this, pilha);
 
         }
     }

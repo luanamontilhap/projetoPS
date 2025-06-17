@@ -4,7 +4,7 @@ public class ModosEnderecamento {
 
     public static int resolveOperando (int opcode, int operando, Memoria memoria) throws AcessoIndevidoAMemoriaCheckedException {
 
-        if ((opcode & 0b10000000) != 0) {
+        if ((opcode & 0b10000000) != 0) { // Imediato
             return operando;
         }
 
