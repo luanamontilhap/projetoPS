@@ -26,12 +26,19 @@ public class Main extends Application {
         // Controller da Interface
         controller = fxmlLoader.getController();
 
+        memoria = new Memoria(12);
+        registradores = new Registradores();
+        pilha = new Pilha(12);
+        executor = new Executor(memoria, registradores, pilha);
+
+        // Passar o controller para o executor atualizar os dados no futuro
+        executor.setController(controller);
+
         // Iniciar tabelas
         controller.atualizarTabela(registradores);
         controller.atualizarTabelaMemoria(memoria.getMemoria());
 
-        // Passar o controller para o executor atualizar os dados no futuro
-        executor.setController(controller);
+        executor.carregarPrograma(); // carrega o código na memória
 
         try {
             executor.executarPasso();
@@ -41,13 +48,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        memoria = new Memoria(12);
-        registradores = new Registradores();
-        pilha = new Pilha(12);
-        executor = new Executor(memoria, registradores, pilha);
-
-        executor.carregarPrograma(); // carrega o código na memória
-
         launch();
     }
 }
