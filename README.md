@@ -2,9 +2,9 @@
 
 #### Grupo composto por: Felipe Veloso, Gabriel Kuster de Azevedo, Junior Prediger, Luana Montilha, Luiz Kolosque, Matheus Zehetmeyr, Rodrigo Iasculaski.
 
-### Como compilar: 
+## Como compilar: 
 #### Instale o JavaFX: https://gluonhq.com/products/javafx/
-### Extraia para o diretorio de sua preferencia!
+#### Extraia para o diretorio de sua preferencia!
 
 #### Navegue até o diretorio da pasta Calingaert-Extend
 javac --module-path "DIRETORIO DA PASTA JAVAFX" --add-modules javafx.controls,javafx.fxml -d out src\main\java\com\app\calingaertextend\*.java
