@@ -5,7 +5,7 @@ class Instrucoes {
 
     public static void executar (int opcode, int op1, int op2, Registradores registrador, Memoria memoria, Executor executor, Pilha pilha) throws AcessoIndevidoAMemoriaCheckedException {
 
-        int opcodeBase = opcode & 0b00011111; 
+        int opcodeBase = opcode & 0b00011111; // And bit a bit 
 
         switch (opcodeBase){
             

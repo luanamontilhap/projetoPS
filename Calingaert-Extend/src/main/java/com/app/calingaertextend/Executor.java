@@ -32,10 +32,9 @@ public class Executor {
             int endereco = 0;
 
             while ((linha = reader.readLine()) != null) {
-                linha = linha.trim();
                 if (linha.isEmpty()) continue;
+                String[] numeros = linha.split(" ");
 
-                String[] numeros = linha.split(" "); // separa por espaços
                 for (String numStr : numeros) {
                     int valor = Integer.parseInt(numStr);
                     memoria.setPosicaoMemoria(endereco, valor);
@@ -55,16 +54,13 @@ public class Executor {
         int opcode = memoria.getPosicaoMemoria(pc);
         int op1 = memoria.getPosicaoMemoria(pc+1);
         int op2 = 0;
-
         registradores.setRI(opcode);
         registradores.setRE(op1);
         
-        if (opcode == 0x13) { // Copy precisa de 2 operandos
+        if (opcode == 13) { 
             op2 = memoria.getPosicaoMemoria(pc + 2); 
         }
-
         Instrucoes.executar(opcode, op1, op2, registradores, memoria, this, pilha);
-
         }
         controller.atualizarTabela(registradores);
         controller.atualizarTabelaMemoria(memoria.getMemoria());
