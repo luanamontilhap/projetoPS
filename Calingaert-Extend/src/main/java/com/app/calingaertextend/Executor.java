@@ -21,7 +21,7 @@ public class Executor {
 
     }
 
-    public void carregarPrograma() {
+    public void carregarPrograma() { // Em algum lugar aqui eu tenho que provavelmente fazer a parte da entrada do registrador
     try (InputStream inputStream = getClass().getResourceAsStream("/arquivos/exemplo.txt")) {
         if (inputStream == null) {
             System.out.println("Arquivo não encontrado.");
@@ -34,7 +34,7 @@ public class Executor {
             while ((linha = reader.readLine()) != null) {
                 if (linha.isEmpty()) continue;
                 String[] numeros = linha.split(" ");
-
+            
                 for (String numStr : numeros) {
                     int valor = Integer.parseInt(numStr);
                     memoria.setPosicaoMemoria(endereco, valor);
