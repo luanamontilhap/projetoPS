@@ -38,11 +38,15 @@ public class Main extends Application {
         controller.atualizarTabela(registradores);
         controller.atualizarTabelaMemoria(memoria.getMemoria());
 
+        executor.gerarArquivo();
+
+
         try {
             executor.executarPasso();
         } catch (AcessoIndevidoAMemoriaCheckedException e) {
             e.printStackTrace();
         }
+        
     }
 
     public static void main(String[] args) {
