@@ -6,8 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-
 
 public class Executor {
         
@@ -22,7 +20,6 @@ public class Executor {
     private String op2;
     private String comentario;
     private String linha;
-
 
     public Executor (Memoria memoria, Registradores registradores, Pilha pilha) {
         this.memoria = memoria;
@@ -53,21 +50,21 @@ public class Executor {
             setLinha(linhaLida);
             String[] campos = getLinha().split(","); 
 
-            label = campos[0];
-            opcode = campos[1];
-            op1 = campos[2];
-            op2 = campos[3];
-            comentario = campos[4];
-
-            if (!label.isBlank()) setLabel(label);
-            if (!opcode.isBlank()) setOpcode(opcode);
-            if (!op1.isBlank()) setOp1(op1);
-            if (!op2.isBlank()) setOp2(op2);
-            if (!comentario.isBlank()) setComentario(comentario);
+            if (!label.isBlank()) setLabel(campos[0]);
+            if (!opcode.isBlank()) setOpcode(campos[1]);
+            if (!op1.isBlank()) setOp1(campos[2]);
+            if (!op2.isBlank()) setOp2(campos[3]);
+            if (!comentario.isBlank()) setComentario(campos[4]);
             
-            String linhaArquivoSaida = String.format("Label: %s | Opcode: %s | Op1: %s | Op2: %s | Comentário: %s", getLabel(), getOpcode(), getOp1(), getOp2(), getComentario());
-            writer.write(linhaArquivoSaida); // escreve a linha formatada
-            writer.newLine(); // adiciona uma linha nova no arquivo
+            String linhaArquivoSaida = String.format("Label: %s , Opcode: %s , Op1: %s , Op2: %s , Comentário: %s", 
+            getLabel(), 
+            getOpcode(), 
+            getOp1(), 
+            getOp2(), 
+            getComentario());
+
+            writer.write(linhaArquivoSaida); 
+            writer.newLine(); 
         }
             System.out.println("Arquivo escrito!");
         } catch (IOException e) {
