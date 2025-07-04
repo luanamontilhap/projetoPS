@@ -1,2 +1,0 @@
-Label: null , Opcode: 3 , Op1: 10 , Op2: null , Comentário: null
-Label: null , Opcode: 6 , Op1: 11 , Op2: null , Comentário: null

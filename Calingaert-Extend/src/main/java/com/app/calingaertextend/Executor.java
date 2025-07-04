@@ -1,11 +1,12 @@
 package com.app.calingaertextend;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Executor {
         
@@ -34,15 +35,17 @@ public class Executor {
         this.linha = null;
     }
 
-    public void gerarArquivo() { 
+    public List<String> gerarListaFormatada() { 
+    List<String> resultado = new ArrayList<>();
+    int contadorDeLinhas = 1;
+
     try (InputStream inputStream = getClass().getResourceAsStream("/arquivos/exemplo.txt");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        BufferedWriter writer = new BufferedWriter(new FileWriter("saida.txt"))
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
         ) {
 
         if (inputStream == null) {
             System.out.println("Arquivo não encontrado.");
-            return;
+            return resultado;
         }
         String linhaLida;
 
@@ -50,25 +53,25 @@ public class Executor {
             setLinha(linhaLida);
             String[] campos = getLinha().split(","); 
 
+            if (!campos[0].isBlank()) setLabel(campos[0]);
             if (!campos[1].isBlank()) setOpcode(campos[1]);
             if (!campos[2].isBlank()) setOp1(campos[2]);
             if (!campos[3].isBlank()) setOp2(campos[3]);
             if (!campos[4].isBlank()) setComentario(campos[4]);
             
-            String linhaArquivoSaida = String.format("Label: %s , Opcode: %s , Op1: %s , Op2: %s , Comentário: %s", 
-            getLabel(), 
-            getOpcode(), 
-            getOp1(), 
-            getOp2(), 
-            getComentario());
+            String linhaArquivoSaida = String.format("Label: %s , Opcode: %s , Op1: %s , Op2: %s , Comentário: %s , Linha: %s",  
+            getLabel(), getOpcode(), getOp1(), getOp2(), getComentario(), contadorDeLinhas);
 
-            writer.write(linhaArquivoSaida); 
-            writer.newLine(); 
+            resultado.add(linhaArquivoSaida);
+            contadorDeLinhas++;
+
         }
             System.out.println("Arquivo escrito!");
         } catch (IOException e) {
         e.printStackTrace();
         }
+
+        return resultado;
     }
 
     // Provavel que precise ser modificada

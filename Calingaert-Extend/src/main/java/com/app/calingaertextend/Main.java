@@ -38,7 +38,7 @@ public class Main extends Application {
         controller.atualizarTabela(registradores);
         controller.atualizarTabelaMemoria(memoria.getMemoria());
 
-        executor.gerarArquivo();
+        System.out.println(executor.gerarListaFormatada()); // Retorna uma lista, adicionei a variavel LINHA tambem, nao é necessario usar ela
 
 
         try {
