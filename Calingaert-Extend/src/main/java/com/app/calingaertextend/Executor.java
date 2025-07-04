@@ -50,11 +50,10 @@ public class Executor {
             setLinha(linhaLida);
             String[] campos = getLinha().split(","); 
 
-            if (!label.isBlank()) setLabel(campos[0]);
-            if (!opcode.isBlank()) setOpcode(campos[1]);
-            if (!op1.isBlank()) setOp1(campos[2]);
-            if (!op2.isBlank()) setOp2(campos[3]);
-            if (!comentario.isBlank()) setComentario(campos[4]);
+            if (!campos[1].isBlank()) setOpcode(campos[1]);
+            if (!campos[2].isBlank()) setOp1(campos[2]);
+            if (!campos[3].isBlank()) setOp2(campos[3]);
+            if (!campos[4].isBlank()) setComentario(campos[4]);
             
             String linhaArquivoSaida = String.format("Label: %s , Opcode: %s , Op1: %s , Op2: %s , Comentário: %s", 
             getLabel(), 
