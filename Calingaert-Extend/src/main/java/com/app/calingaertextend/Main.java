@@ -38,8 +38,6 @@ public class Main extends Application {
         controller.atualizarTabela(registradores);
         controller.atualizarTabelaMemoria(memoria.getMemoria());
 
-        executor.carregarPrograma(); // carrega o código na memória
-
         try {
             executor.executarPasso();
         } catch (AcessoIndevidoAMemoriaCheckedException e) {
