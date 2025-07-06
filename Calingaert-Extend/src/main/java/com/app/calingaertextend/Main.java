@@ -7,6 +7,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import com.app.calingaertextend.montador.PrimeiraPassagem;
+import com.app.calingaertextend.montador.SegundaPassagem;
+import com.app.calingaertextend.montador.TabelaDeSimbolos;
+import com.app.calingaertextend.montador.TabelaInstrucao;
+
 public class Main extends Application {
 
     public static Memoria memoria;
@@ -40,12 +45,17 @@ public class Main extends Application {
 
         System.out.println(executor.gerarListaFormatada()); // Retorna uma lista, adicionei a variavel LINHA tambem, nao é necessario usar ela
 
+        String arquivoEntrada = "java/teste.txt"; 
+        String arquivoSaida = "java/saida.txt";   
 
-        try {
-            executor.executarPasso();
-        } catch (AcessoIndevidoAMemoriaCheckedException e) {
-            e.printStackTrace();
-        }
+        PrimeiraPassagem pp = new PrimeiraPassagem();
+        SegundaPassagem sp = new SegundaPassagem();
+        TabelaDeSimbolos tabelaSimbolos = new TabelaDeSimbolos();
+        TabelaInstrucao tabelaInstrucao = new TabelaInstrucao();
+
+        pp.primeirapassagem(arquivoEntrada, tabelaSimbolos, tabelaInstrucao);
+
+        sp.segundapassagem(arquivoEntrada, arquivoSaida, tabelaSimbolos, tabelaInstrucao);
         
     }
 
